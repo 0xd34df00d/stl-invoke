@@ -1,0 +1,103 @@
+\documentclass{wg21}
+
+\usepackage{xcolor}
+\usepackage{soul}
+\usepackage{ulem}
+\usepackage{fullpage}
+\usepackage{parskip}
+\usepackage{csquotes}
+\usepackage{listings}
+\usepackage{minted}
+\usepackage{enumitem}
+
+\lstdefinestyle{base}{
+  language=c++,
+  breaklines=false,
+  basicstyle=\ttfamily\color{black},
+  moredelim=**[is][\color{green!50!black}]{@}{@},
+  escapeinside={(*@}{@*)}
+}
+
+\newcommand{\cc}[1]{\mintinline{c++}{#1}}
+\newminted[cpp]{c++}{}
+
+\title{Relaxing the requirements on standard library algorithms predicates and functors}
+\docnumber{P0XXXR0}
+\audience{LEWG}
+\author{Georg Rudoy}{georgii.rudoi@phystech.edu}
+
+\begin{document}
+\maketitle
+
+\section{Revision history}
+\begin{itemize}
+  \item R0 --- Initial draft
+\end{itemize}
+
+\section{Abstract}
+
+This paper proposes a (strictly relaxing) change in the definition of several
+algorithms in the standard library. Various algorithms like \cc{std::any_of},
+\cc{std::find_if} and the likes are currently defined in terms of function call
+syntax on the predicate/function, forbidding passing pointers to members where
+they might have sufficed.
+
+\section{Motivation}
+
+\begin{cpp}
+  struct Standard
+  {
+      bool isCurrent;
+  };
+
+  vector<Standard> stds;
+
+  auto hasCurrent = any_of(stds.begin(), stds.end(),
+          &Standard::isCurrent);                                // nope
+  auto hasCurrent = any_of(stds.begin(), stds.end(),
+          [](auto&& std) { return std.isCurrent; });            // ok 
+
+
+  class Employee
+  {
+  public:
+      void fire();
+      bool shouldBeFired() const;
+  };
+
+  vector<Employee> emps;
+
+  auto poorFellow = find_if(emps.begin(), emps.end(),
+          &Employee::shouldBeFired);                            // nope
+  auto poorFellow = find_if(emps.begin(), emps.end(),
+          [](auto&& emp) { return emp.shouldBeFired(); });      // ok
+
+  for_each(emps.begin(), emps.end(), &Employee::fire);          // nope
+  for_each(emps.begin(), emps.end(),
+          [](auto&& emp) { emp.fire(); });                      // ok
+\end{cpp}
+
+\section{The fix}
+
+Replace \cc{pred(*i)} and the likes with \cc{std::invoke(pred, *i)}
+and the likes.
+
+\section{Proposed wording}
+
+In \textbf{[alg.all_of]/2}:
+\begin{quote}
+  \emph{Returns}: \tcode{true} if \tcode{[first, last)} is empty or if
+  \removed{\tcode{pred(*i)}} \added{std::invoke(pred, *i)} is
+  \tcode{true} for every iterator \tcode{i} in the range \tcode{[first, last)},
+  and \tcode{false} otherwise.
+\end{quote}
+
+In \textbf{[alg.any_of]/2}: ditto.
+
+In \textbf{[alg.none_of]/2}: ditto.
+
+In \textbf{[alg.foreach]/2}:
+\begin{quote}
+\end{quote}
+
+\end{document}
