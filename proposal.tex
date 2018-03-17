@@ -120,4 +120,27 @@ In \textbf{[alg.foreach]/2}:
 \begin{quote}
 \end{quote}
 
+In \textbf{[alg.find.end]/2}:
+\begin{quote}
+  \emph{Returns}: The last iterator \tcode{i} in the range
+  \tcode{[first1, last1 - (last2 - first2))} such that for every non-negative
+  integer \tcode{n < (last2 - first2)}, the following corresponding conditions
+  hold: \tcode{*(i + n) == *(first2 + n)},
+  \removed{\tcode{pred(*(i + n), *(first2 + n)) != false}}
+  \added{\tcode{std::invoke(pred, *(i + n), *(first2 + n)) != false}}.
+  Returns \tcode{last1} if \tcode{[first2, last2)} is empty or if no such iterator is found.
+\end{quote}
+
+In \textbf{[alg.find.first.of]/2}: ditto.
+
+In \textbf{[alg.adjacent.find]/1}: ditto.
+
+In \textbf{[alg.mismatch]/2}: ditto.
+
+In \textbf{[alg.equal]/2}: ditto.
+
+In \textbf{[alg.is_permutation]/3}: ditto.
+
+In \textbf{[alg.search]/2}: ditto.
+
 \end{document}
