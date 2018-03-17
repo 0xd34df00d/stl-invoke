@@ -21,7 +21,7 @@
 \newcommand{\cc}[1]{\mintinline{c++}{#1}}
 \newminted[cpp]{c++}{}
 
-\title{Relaxing the requirements on standard library algorithms predicates and functors}
+\title{Extending acceptable predicates and functions in standard library algorithms}
 \docnumber{P0XXXR0}
 \audience{LEWG}
 \author{Georg Rudoy}{georgii.rudoi@phystech.edu}
@@ -36,11 +36,10 @@
 
 \section{Abstract}
 
-This paper proposes a (strictly relaxing) change in the definition of several
-algorithms in the standard library. Various algorithms like \cc{std::any_of},
-\cc{std::find_if} and the likes are currently defined in terms of function call
-syntax on the predicate/function, forbidding passing pointers to members where
-they might have sufficed.
+This paper proposes a (strictly relaxing) change in the definitions of several
+algorithms in the standard library: \cc{std::any_of}, \cc{std::find_if} and the
+likes are currently defined in terms of function call syntax on the predicate/function,
+forbidding passing pointers to members where they otherwise would be sufficient.
 
 \section{Motivation}
 
