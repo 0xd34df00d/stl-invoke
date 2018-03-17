@@ -108,8 +108,8 @@ where relevant.
 
 In \textbf{[alg.all_of]/2}:
 \begin{quote}
-  \emph{Returns}: \tcode{true} if \tcode{[first, last)} is empty or if
-  \removed{\tcode{pred(*i)}} \added{std::invoke(pred, *i)} is
+  \emph{Returns:} \tcode{true} if \tcode{[first, last)} is empty or if
+  \removed{\tcode{pred(*i)}} \added{\tcode{std::invoke(pred, *i)}} is
   \tcode{true} for every iterator \tcode{i} in the range \tcode{[first, last)},
   and \tcode{false} otherwise.
 \end{quote}
@@ -117,6 +117,10 @@ In \textbf{[alg.all_of]/2}:
 In \textbf{[alg.any_of]/2}: ditto.
 
 In \textbf{[alg.none_of]/2}: ditto.
+
+In \textbf{[alg.find]/2}: ditto.
+
+In \textbf{[alg.count]/1}: ditto.
 
 In \textbf{[alg.foreach]/2}:
 \begin{quote}
