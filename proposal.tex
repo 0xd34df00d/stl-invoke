@@ -78,6 +78,25 @@ they might have sufficed.
           [](auto&& emp) { emp.fire(); });                      // ok
 \end{cpp}
 
+\begin{cpp}
+  class Employee
+  {
+  public:
+      bool knowsLanguage(const Language& lang) const;
+  };
+
+  std::vector<Employee> emps;
+  std::vector<Language> langs;
+
+  auto translator = std::find_first_of(emps.begin(), emps.end(),
+          langs.begin(), langs.end(),
+          &Employee::knowsLanguage);                            // nope
+  auto translator = std::find_first_of(emps.begin(), emps.end(),
+          langs.begin(), langs.end(),
+          [](auto&& emp, auto&& lang) { return emp.knowsLanguage(lang); });
+                                                                // ok
+\end{cpp}
+
 \section{The fix}
 
 Replace \cc{pred(*i)} and the likes with \cc{std::invoke(pred, *i)}
