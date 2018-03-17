@@ -50,30 +50,31 @@ they might have sufficed.
       bool isCurrent;
   };
 
-  vector<Standard> stds;
+  std::vector<Standard> stds;
 
-  auto hasCurrent = any_of(stds.begin(), stds.end(),
+  auto hasCurrent = std::any_of(stds.begin(), stds.end(),
           &Standard::isCurrent);                                // nope
-  auto hasCurrent = any_of(stds.begin(), stds.end(),
+  auto hasCurrent = std::any_of(stds.begin(), stds.end(),
           [](auto&& std) { return std.isCurrent; });            // ok 
+\end{cpp}
 
-
+\begin{cpp}
   class Employee
   {
   public:
-      void fire();
       bool shouldBeFired() const;
+      void fire();
   };
 
-  vector<Employee> emps;
+  std::vector<Employee> emps;
 
-  auto poorFellow = find_if(emps.begin(), emps.end(),
+  auto poorFellow = std::find_if(emps.begin(), emps.end(),
           &Employee::shouldBeFired);                            // nope
-  auto poorFellow = find_if(emps.begin(), emps.end(),
+  auto poorFellow = std::find_if(emps.begin(), emps.end(),
           [](auto&& emp) { return emp.shouldBeFired(); });      // ok
 
-  for_each(emps.begin(), emps.end(), &Employee::fire);          // nope
-  for_each(emps.begin(), emps.end(),
+  std::for_each(emps.begin(), emps.end(), &Employee::fire);     // nope
+  std::for_each(emps.begin(), emps.end(),
           [](auto&& emp) { emp.fire(); });                      // ok
 \end{cpp}
 
