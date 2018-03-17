@@ -102,6 +102,9 @@ they might have sufficed.
 Replace \cc{pred(*i)} and the likes with \cc{std::invoke(pred, *i)}
 and the likes.
 
+Clarify the passed function object should be applied using \tcode{std::invoke}
+where relevant.
+
 \section{Proposed wording}
 
 In \textbf{[alg.all_of]/2}:
@@ -118,7 +121,19 @@ In \textbf{[alg.none_of]/2}: ditto.
 
 In \textbf{[alg.foreach]/2}:
 \begin{quote}
+  \emph{Effects:} Applies \tcode{f} \added{using \tcode{std::invoke}} to the
+  result of dereferencing every iterator in the range \tcode{[first, last)},
+  starting from \tcode{first} and proceeding to \tcode{last - 1}.
+  [ \emph{Note:} If the type of \tcode{first} satisfies the requirements of a
+  mutable iterator, \tcode{f} may apply non-constant functions through the
+  dereferenced iterator. --- \emph{end note} ]
 \end{quote}
+
+In \textbf{[alg.foreach]/7}: ditto.
+
+In \textbf{[alg.foreach]/13}: ditto.
+
+In \textbf{[alg.foreach]/18}: ditto.
 
 In \textbf{[alg.find.end]/2}:
 \begin{quote}
